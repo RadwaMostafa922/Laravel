@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Post;
+
 use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Comment;
+use Illuminate\Http\Request;
 
-
-class PostController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(5);
-        return view('posts.index', [
-            'posts' => $posts
-        ]);
+        //
     }
 
     /**
@@ -29,10 +25,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('posts.create', [
-            'users' => $users
-        ]);
+        //
     }
 
     /**
@@ -43,14 +36,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = request()->all();
-        Post::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'user_id' => $data['post_creator'],
-        ]);
-
-        return redirect('/posts');
+        $users = User::all();
+        $comment = new Comment($request->all());
+        $comment->user_id = $request['post_creator'];
+        $comment->save();
+        return view('comments.create', [
+            'comments' => $comment ,
+             'users' => $users
+            ]);
     }
 
     /**
@@ -61,10 +54,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.show', [
-            'post' => $post
-        ]);
+        //
     }
 
     /**
@@ -75,12 +65,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
-        $users = User::all();
-        return view('posts.edit', [
-            'post' => $post,
-            'users' => $users,
-        ]);
+        //
     }
 
     /**
@@ -92,10 +77,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $input = $request->all();
-        $post->fill($input)->save();
-        return "updated successfully";
+        //
     }
 
     /**
@@ -106,8 +88,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        Post::find($id)->delete();
-        return back();
-        //return view('posts.delete');
+        //
     }
 }
