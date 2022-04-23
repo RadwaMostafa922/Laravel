@@ -1,14 +1,15 @@
-@extends('posts.show')
-@section(show-comments)
 <table class="table mt-4">
+
     @foreach ($post->comments as $comment)
     <tbody>
         <tr>
-            <th>{{ $comment->user->name }}</th>
+            @if($comment->user)
+            <td> {{ $comment->user->name }} </td>
+            @endif
             <td> {{ $comment->body }} </td>
             <td> {{ \Carbon\Carbon::parse($comment->created_at)->toDayDateTimeString() }} </td>
             <td>
-                <a href=" {{ route('posts.edit',[$post->id]) }}" class="btn btn-primary">Edit</a>
+                <a href=" {{ route('comments.edit',[$comment->id]) }}" class="btn btn-primary">Edit</a>
                 <form method="POST" action="{{ route('comments.delete', $comment->id) }}">
                     @csrf
                     @method('DELETE')
@@ -19,4 +20,3 @@
     </tbody>
     @endforeach
 </table>
-@endsection

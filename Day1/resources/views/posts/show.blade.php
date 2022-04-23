@@ -35,9 +35,29 @@
     </tbody>
 </table>
 <div class="container">
-    @yield('comment-form')
+    <div class="text-center mb-4">
+    <h4>Add comment</h4>
+    </div>
+    <div id="createcomment">
+        <form method="POST" action="{{ route('comments.store') }}">
+            @csrf
+            <div class="mb-3">
+                <textarea name="body" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <input type="hidden" name="post_id" value="{{ $post->id }}" />
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Comment Creator</label>
+                <select name="post_creator" class="form-control">
+                    @foreach ($users as $user)
+                    <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <button class="btn btn-success">Done</button>
+        </form>
+    </div>
 </div>
 <div class="container">
-    @yield('show-comments')
+    @include('comments.show')
 </div>
 @endsection

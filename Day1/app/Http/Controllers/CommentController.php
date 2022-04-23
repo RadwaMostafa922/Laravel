@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Post;
 use App\Models\Comment;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -25,7 +27,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        //
+       //
     }
 
     /**
@@ -36,14 +38,13 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $users = User::all();
-        $comment = new Comment($request->all());
+        $comment = new Comment;
+        $comment->body = $request->get('body');
         $comment->user_id = $request['post_creator'];
-        $comment->save();
-        return view('comments.create', [
-            'comments' => $comment ,
-             'users' => $users
-            ]);
+        $post = Post::find($request->get('post_id'));
+        $post->comments()->save($comment);
+
+        return back();
     }
 
     /**
@@ -65,7 +66,12 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $users = User::all();
+        return view('comments.edit', [
+            'comment' => $comment,
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -77,7 +83,11 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $input = $request->all();
+        $comment->fill($input)->save();
+        //return redirect('/posts');
+        return back();
     }
 
     /**
@@ -88,6 +98,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Comment::find($id)->delete();
+        return back();
     }
 }

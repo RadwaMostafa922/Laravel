@@ -7,12 +7,12 @@
     @csrf
     @method('PUT')
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label"> </label>
+        <label for="exampleFormControlInput1" class="form-label"><h2>Title</h2> </label>
         <input name="title" type="text" class="form-control" id="exampleFormControlInput1" value="{{ $post->title }}">
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label"> </label>
-        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ $post->created_at }}</textarea>
+        <label for="exampleFormControlTextarea1" class="form-label"> <h2>Description</h2></label>
+        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ $post->description }}</textarea>
     </div>
 
     <div class="mb-3">

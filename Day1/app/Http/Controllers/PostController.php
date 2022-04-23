@@ -61,9 +61,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $users = User::all();
         $post = Post::findOrFail($id);
         return view('posts.show', [
-            'post' => $post
+            'post' => $post,
+            'users' => $users
         ]);
     }
 
@@ -95,7 +97,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $input = $request->all();
         $post->fill($input)->save();
-        return "updated successfully";
+        return redirect('/posts');
     }
 
     /**
@@ -108,6 +110,5 @@ class PostController extends Controller
     {
         Post::find($id)->delete();
         return back();
-        //return view('posts.delete');
     }
 }
